@@ -1,12 +1,13 @@
 import type {Metadata} from 'next'
-import {notFound} from 'next/navigation'
 import {lang as rootLang} from 'next/root-params'
+import {Suspense} from 'react'
 
-import {LanguageSwitcher} from '@/components/LanguageSwitcher'
-import {PageBuilder} from '@/components/PageBuilder'
-import {hasLanguage, type Language} from '@/i18n'
+import {hasLanguage} from '@/i18n'
 import {cachedSanity} from '@/sanity/live'
-import {PAGE_QUERY, PAGE_SLUGS_QUERY} from '@/sanity/queries'
+import {PAGE_SLUGS_QUERY} from '@/sanity/queries'
+
+import {getPage} from './get-page'
+import {PageContent, PageContentSkeleton} from './page-content'
 
 // With Cache Components, generateStaticParams must return at least one entry.
 // The placeholder keeps builds working on an empty dataset; it resolves to a 404.
@@ -22,16 +23,6 @@ export async function generateStaticParams() {
   })
   const slugs = data.flatMap((page) => (page.slug ? [{slug: page.slug}] : []))
   return slugs.length > 0 ? slugs : [{slug: PLACEHOLDER_SLUG}]
-}
-
-async function getPage(language: Language, slug: string) {
-  const {data} = await cachedSanity({
-    query: PAGE_QUERY,
-    params: {language, slug},
-    perspective: 'published',
-    stega: false,
-  })
-  return data
 }
 
 export async function generateMetadata(props: PageProps<'/[lang]/[slug]'>): Promise<Metadata> {
@@ -55,18 +46,10 @@ export async function generateMetadata(props: PageProps<'/[lang]/[slug]'>): Prom
   }
 }
 
-export default async function Page(props: PageProps<'/[lang]/[slug]'>) {
-  const {lang, slug} = await props.params
-  if (!hasLanguage(lang)) notFound()
-
-  const page = await getPage(lang, slug)
-
-  if (!page) notFound()
-
+export default function Page(props: PageProps<'/[lang]/[slug]'>) {
   return (
-    <>
-      <LanguageSwitcher current={lang} translations={page.translations} />
-      <PageBuilder content={page.content} />
-    </>
+    <Suspense fallback={<PageContentSkeleton />}>
+      <PageContent params={props.params} />
+    </Suspense>
   )
 }
