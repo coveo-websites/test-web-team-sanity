@@ -8,6 +8,10 @@ export const dataset = assertValue(
   'Missing environment variable: NEXT_PUBLIC_SANITY_DATASET',
 )
 
+// The Studio workspace that shows this dataset (studio/sanity.config.ts → basePath).
+export const studioUrl =
+  process.env.NEXT_PUBLIC_SANITY_STUDIO_URL || 'http://localhost:3333/production'
+
 // Keep hard-coded; bump deliberately when you want newer API behavior.
 export const apiVersion = '2026-11-06'
 

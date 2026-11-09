@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import {stegaClean} from 'next-sanity'
 
 import {LANGUAGES, type Language} from '@/i18n'
 
@@ -16,10 +17,10 @@ export function LanguageSwitcher({current, translations}: Props) {
     <nav aria-label="Language" className="mx-auto w-full max-w-5xl px-6 pt-4">
       <ul className="flex justify-end gap-3 text-sm">
         {LANGUAGES.map((language) => {
-          const translation = translations?.find((t) => t.language === language.id)
+          const translation = translations?.find((t) => stegaClean(t.language) === language.id)
           const href =
             translation?.slug && !translation.isHome
-              ? `/${language.id}/${translation.slug}`
+              ? `/${language.id}/${stegaClean(translation.slug)}`
               : `/${language.id}`
 
           return (

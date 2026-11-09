@@ -22,6 +22,33 @@ export type SanityImageAssetReference = {
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
+export type CardImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "card.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type LogoImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "logo.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type Photo = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "photo.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
 export type Seo = {
   _type: "seo";
   title?: string;
@@ -41,6 +68,26 @@ export type Link = {
   href?: string;
 };
 
+export type Form = {
+  _type: "form";
+  title?: string;
+  intro?: string;
+  fields?: Array<{
+    label?: string;
+    name?: string;
+    type?: "text" | "email" | "tel" | "textarea" | "select" | "checkbox";
+    choices?: Array<string>;
+    required?: boolean;
+    placeholder?: string;
+    _type: "formField";
+    _key: string;
+  }>;
+  submitLabel?: string;
+  successMessage?: string;
+  hubspotPortalId?: string;
+  hubspotFormId?: string;
+};
+
 export type CallToAction = {
   _type: "callToAction";
   title?: string;
@@ -50,6 +97,92 @@ export type CallToAction = {
       _key: string;
     } & Link
   >;
+};
+
+export type Testimonials = {
+  _type: "testimonials";
+  title?: string;
+  items?: Array<{
+    quote?: string;
+    name?: string;
+    role?: string;
+    company?: string;
+    photo?: Photo;
+    _type: "testimonial";
+    _key: string;
+  }>;
+};
+
+export type LogoCloud = {
+  _type: "logoCloud";
+  title?: string;
+  logos?: Array<{
+    name?: string;
+    image?: LogoImage;
+    href?: string;
+    _type: "logo";
+    _key: string;
+  }>;
+};
+
+export type Stats = {
+  _type: "stats";
+  title?: string;
+  items?: Array<{
+    value?: string;
+    label?: string;
+    _type: "stat";
+    _key: string;
+  }>;
+};
+
+export type Faq = {
+  _type: "faq";
+  title?: string;
+  items?: Array<{
+    question?: string;
+    answer?: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    _type: "faqItem";
+    _key: string;
+  }>;
+};
+
+export type Video = {
+  _type: "video";
+  title?: string;
+  url?: string;
+  caption?: string;
+};
+
+export type CardGrid = {
+  _type: "cardGrid";
+  title?: string;
+  intro?: string;
+  cards?: Array<{
+    image?: CardImage;
+    title?: string;
+    text?: string;
+    link?: Link;
+    _type: "card";
+    _key: string;
+  }>;
 };
 
 export type SplitImage = {
@@ -96,6 +229,29 @@ export type Features = {
   }>;
 };
 
+export type RichText = {
+  _type: "richText";
+  title?: string;
+  body?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h3" | "h4" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+};
+
 export type Hero = {
   _type: "hero";
   title?: string;
@@ -121,13 +277,37 @@ export type PageBuilder = Array<
     } & Hero)
   | ({
       _key: string;
+    } & RichText)
+  | ({
+      _key: string;
     } & Features)
   | ({
       _key: string;
     } & SplitImage)
   | ({
       _key: string;
+    } & CardGrid)
+  | ({
+      _key: string;
+    } & Video)
+  | ({
+      _key: string;
+    } & Faq)
+  | ({
+      _key: string;
+    } & Stats)
+  | ({
+      _key: string;
+    } & LogoCloud)
+  | ({
+      _key: string;
+    } & Testimonials)
+  | ({
+      _key: string;
     } & CallToAction)
+  | ({
+      _key: string;
+    } & Form)
 >;
 
 export type PageReference = {
@@ -310,11 +490,22 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes =
   | SanityImageAssetReference
+  | CardImage
+  | LogoImage
+  | Photo
   | Seo
   | Link
+  | Form
   | CallToAction
+  | Testimonials
+  | LogoCloud
+  | Stats
+  | Faq
+  | Video
+  | CardGrid
   | SplitImage
   | Features
+  | RichText
   | Hero
   | PageBuilder
   | PageReference
@@ -367,7 +558,7 @@ export type SETTINGS_QUERY_RESULT =
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: HOME_PAGE_QUERY
-// Query: *[_id == "settings-" + $language][0].homePage->{   _id,  title,  language,  "slug": slug.current,  seo,  content[]{    _key,    _type,    _type == "hero" => { title, text, image, links[]{ _key, label, href } },    _type == "features" => { title, intro, items[]{ _key, title, text } },    _type == "splitImage" => { orientation, title, body, image },    _type == "callToAction" => { title, text, links[]{ _key, label, href } }  },  // Every language version of this page, linked by @sanity/document-internationalization  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{    language,    "slug": value->slug.current,    "isHome": value._ref in *[_type == "settings"].homePage._ref  } }
+// Query: *[_id == "settings-" + $language][0].homePage->{   _id,  title,  language,  "slug": slug.current,  seo,  content[]{    _key,    _type,    _type == "hero" => { title, text, image, links[]{ _key, label, href } },    _type == "features" => { title, intro, items[]{ _key, title, text } },    _type == "splitImage" => { orientation, title, body, image },    _type == "callToAction" => { title, text, links[]{ _key, label, href } },    _type == "richText" => { title, body },    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },    _type == "video" => { title, url, caption },    _type == "faq" => { title, items[]{ _key, question, answer } },    _type == "stats" => { title, items[]{ _key, value, label } },    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },    _type == "form" => {      title,      intro,      fields[]{ _key, label, name, type, choices, required, placeholder },      submitLabel,      successMessage,      hubspotPortalId,      hubspotFormId    }  },  // Every language version of this page, linked by @sanity/document-internationalization  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{    language,    "slug": value->slug.current,    "isHome": value._ref in *[_type == "settings"].homePage._ref  } }
 export type HOME_PAGE_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -388,6 +579,49 @@ export type HOME_PAGE_QUERY_RESULT = {
       }
     | {
         _key: string;
+        _type: "cardGrid";
+        title: string | null;
+        intro: string | null;
+        cards: Array<{
+          _key: string;
+          title: string | null;
+          text: string | null;
+          image: CardImage | null;
+          link: {
+            label: string | null;
+            href: string | null;
+          } | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "faq";
+        title: string | null;
+        items: Array<{
+          _key: string;
+          question: string | null;
+          answer: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<{
+              href?: string;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }> | null;
+        }> | null;
+      }
+    | {
+        _key: string;
         _type: "features";
         title: string | null;
         intro: string | null;
@@ -396,6 +630,32 @@ export type HOME_PAGE_QUERY_RESULT = {
           title: string | null;
           text: string | null;
         }> | null;
+      }
+    | {
+        _key: string;
+        _type: "form";
+        title: string | null;
+        intro: string | null;
+        fields: Array<{
+          _key: string;
+          label: string | null;
+          name: string | null;
+          type:
+            | "checkbox"
+            | "email"
+            | "select"
+            | "tel"
+            | "text"
+            | "textarea"
+            | null;
+          choices: Array<string> | null;
+          required: boolean | null;
+          placeholder: string | null;
+        }> | null;
+        submitLabel: string | null;
+        successMessage: string | null;
+        hubspotPortalId: string | null;
+        hubspotFormId: string | null;
       }
     | {
         _key: string;
@@ -414,6 +674,40 @@ export type HOME_PAGE_QUERY_RESULT = {
           _key: string;
           label: string | null;
           href: string | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "logoCloud";
+        title: string | null;
+        logos: Array<{
+          _key: string;
+          name: string | null;
+          href: string | null;
+          image: LogoImage | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "richText";
+        title: string | null;
+        body: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h3" | "h4" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<{
+            href?: string;
+            _type: "link";
+            _key: string;
+          }>;
+          level?: number;
+          _type: "block";
+          _key: string;
         }> | null;
       }
     | {
@@ -449,6 +743,36 @@ export type HOME_PAGE_QUERY_RESULT = {
           _type: "image";
         } | null;
       }
+    | {
+        _key: string;
+        _type: "stats";
+        title: string | null;
+        items: Array<{
+          _key: string;
+          value: string | null;
+          label: string | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "testimonials";
+        title: string | null;
+        items: Array<{
+          _key: string;
+          quote: string | null;
+          name: string | null;
+          role: string | null;
+          company: string | null;
+          photo: Photo | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "video";
+        title: string | null;
+        url: string | null;
+        caption: string | null;
+      }
   > | null;
   translations: Array<{
     language: string | null;
@@ -459,7 +783,7 @@ export type HOME_PAGE_QUERY_RESULT = {
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && language == $language && slug.current == $slug][0]{   _id,  title,  language,  "slug": slug.current,  seo,  content[]{    _key,    _type,    _type == "hero" => { title, text, image, links[]{ _key, label, href } },    _type == "features" => { title, intro, items[]{ _key, title, text } },    _type == "splitImage" => { orientation, title, body, image },    _type == "callToAction" => { title, text, links[]{ _key, label, href } }  },  // Every language version of this page, linked by @sanity/document-internationalization  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{    language,    "slug": value->slug.current,    "isHome": value._ref in *[_type == "settings"].homePage._ref  } }
+// Query: *[_type == "page" && language == $language && slug.current == $slug][0]{   _id,  title,  language,  "slug": slug.current,  seo,  content[]{    _key,    _type,    _type == "hero" => { title, text, image, links[]{ _key, label, href } },    _type == "features" => { title, intro, items[]{ _key, title, text } },    _type == "splitImage" => { orientation, title, body, image },    _type == "callToAction" => { title, text, links[]{ _key, label, href } },    _type == "richText" => { title, body },    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },    _type == "video" => { title, url, caption },    _type == "faq" => { title, items[]{ _key, question, answer } },    _type == "stats" => { title, items[]{ _key, value, label } },    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },    _type == "form" => {      title,      intro,      fields[]{ _key, label, name, type, choices, required, placeholder },      submitLabel,      successMessage,      hubspotPortalId,      hubspotFormId    }  },  // Every language version of this page, linked by @sanity/document-internationalization  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{    language,    "slug": value->slug.current,    "isHome": value._ref in *[_type == "settings"].homePage._ref  } }
 export type PAGE_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -480,6 +804,49 @@ export type PAGE_QUERY_RESULT = {
       }
     | {
         _key: string;
+        _type: "cardGrid";
+        title: string | null;
+        intro: string | null;
+        cards: Array<{
+          _key: string;
+          title: string | null;
+          text: string | null;
+          image: CardImage | null;
+          link: {
+            label: string | null;
+            href: string | null;
+          } | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "faq";
+        title: string | null;
+        items: Array<{
+          _key: string;
+          question: string | null;
+          answer: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<{
+              href?: string;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }> | null;
+        }> | null;
+      }
+    | {
+        _key: string;
         _type: "features";
         title: string | null;
         intro: string | null;
@@ -488,6 +855,32 @@ export type PAGE_QUERY_RESULT = {
           title: string | null;
           text: string | null;
         }> | null;
+      }
+    | {
+        _key: string;
+        _type: "form";
+        title: string | null;
+        intro: string | null;
+        fields: Array<{
+          _key: string;
+          label: string | null;
+          name: string | null;
+          type:
+            | "checkbox"
+            | "email"
+            | "select"
+            | "tel"
+            | "text"
+            | "textarea"
+            | null;
+          choices: Array<string> | null;
+          required: boolean | null;
+          placeholder: string | null;
+        }> | null;
+        submitLabel: string | null;
+        successMessage: string | null;
+        hubspotPortalId: string | null;
+        hubspotFormId: string | null;
       }
     | {
         _key: string;
@@ -506,6 +899,40 @@ export type PAGE_QUERY_RESULT = {
           _key: string;
           label: string | null;
           href: string | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "logoCloud";
+        title: string | null;
+        logos: Array<{
+          _key: string;
+          name: string | null;
+          href: string | null;
+          image: LogoImage | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "richText";
+        title: string | null;
+        body: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h3" | "h4" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<{
+            href?: string;
+            _type: "link";
+            _key: string;
+          }>;
+          level?: number;
+          _type: "block";
+          _key: string;
         }> | null;
       }
     | {
@@ -541,6 +968,36 @@ export type PAGE_QUERY_RESULT = {
           _type: "image";
         } | null;
       }
+    | {
+        _key: string;
+        _type: "stats";
+        title: string | null;
+        items: Array<{
+          _key: string;
+          value: string | null;
+          label: string | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "testimonials";
+        title: string | null;
+        items: Array<{
+          _key: string;
+          quote: string | null;
+          name: string | null;
+          role: string | null;
+          company: string | null;
+          photo: Photo | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "video";
+        title: string | null;
+        url: string | null;
+        caption: string | null;
+      }
   > | null;
   translations: Array<{
     language: string | null;
@@ -560,8 +1017,8 @@ export type PAGE_SLUGS_QUERY_RESULT = Array<{
 declare global {
   interface SanityQueries {
     '\n  *[_id == "settings-" + $language][0]{\n    title,\n    description,\n    navigation[]{ _key, label, href }\n  }\n': SETTINGS_QUERY_RESULT;
-    '\n  *[_id == "settings-" + $language][0].homePage->{ \n  _id,\n  title,\n  language,\n  "slug": slug.current,\n  seo,\n  content[]{\n    _key,\n    _type,\n    _type == "hero" => { title, text, image, links[]{ _key, label, href } },\n    _type == "features" => { title, intro, items[]{ _key, title, text } },\n    _type == "splitImage" => { orientation, title, body, image },\n    _type == "callToAction" => { title, text, links[]{ _key, label, href } }\n  },\n  // Every language version of this page, linked by @sanity/document-internationalization\n  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{\n    language,\n    "slug": value->slug.current,\n    "isHome": value._ref in *[_type == "settings"].homePage._ref\n  }\n }\n': HOME_PAGE_QUERY_RESULT;
-    '\n  *[_type == "page" && language == $language && slug.current == $slug][0]{ \n  _id,\n  title,\n  language,\n  "slug": slug.current,\n  seo,\n  content[]{\n    _key,\n    _type,\n    _type == "hero" => { title, text, image, links[]{ _key, label, href } },\n    _type == "features" => { title, intro, items[]{ _key, title, text } },\n    _type == "splitImage" => { orientation, title, body, image },\n    _type == "callToAction" => { title, text, links[]{ _key, label, href } }\n  },\n  // Every language version of this page, linked by @sanity/document-internationalization\n  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{\n    language,\n    "slug": value->slug.current,\n    "isHome": value._ref in *[_type == "settings"].homePage._ref\n  }\n }\n': PAGE_QUERY_RESULT;
+    '\n  *[_id == "settings-" + $language][0].homePage->{ \n  _id,\n  title,\n  language,\n  "slug": slug.current,\n  seo,\n  content[]{\n    _key,\n    _type,\n    _type == "hero" => { title, text, image, links[]{ _key, label, href } },\n    _type == "features" => { title, intro, items[]{ _key, title, text } },\n    _type == "splitImage" => { orientation, title, body, image },\n    _type == "callToAction" => { title, text, links[]{ _key, label, href } },\n    _type == "richText" => { title, body },\n    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },\n    _type == "video" => { title, url, caption },\n    _type == "faq" => { title, items[]{ _key, question, answer } },\n    _type == "stats" => { title, items[]{ _key, value, label } },\n    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },\n    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },\n    _type == "form" => {\n      title,\n      intro,\n      fields[]{ _key, label, name, type, choices, required, placeholder },\n      submitLabel,\n      successMessage,\n      hubspotPortalId,\n      hubspotFormId\n    }\n  },\n  // Every language version of this page, linked by @sanity/document-internationalization\n  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{\n    language,\n    "slug": value->slug.current,\n    "isHome": value._ref in *[_type == "settings"].homePage._ref\n  }\n }\n': HOME_PAGE_QUERY_RESULT;
+    '\n  *[_type == "page" && language == $language && slug.current == $slug][0]{ \n  _id,\n  title,\n  language,\n  "slug": slug.current,\n  seo,\n  content[]{\n    _key,\n    _type,\n    _type == "hero" => { title, text, image, links[]{ _key, label, href } },\n    _type == "features" => { title, intro, items[]{ _key, title, text } },\n    _type == "splitImage" => { orientation, title, body, image },\n    _type == "callToAction" => { title, text, links[]{ _key, label, href } },\n    _type == "richText" => { title, body },\n    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },\n    _type == "video" => { title, url, caption },\n    _type == "faq" => { title, items[]{ _key, question, answer } },\n    _type == "stats" => { title, items[]{ _key, value, label } },\n    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },\n    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },\n    _type == "form" => {\n      title,\n      intro,\n      fields[]{ _key, label, name, type, choices, required, placeholder },\n      submitLabel,\n      successMessage,\n      hubspotPortalId,\n      hubspotFormId\n    }\n  },\n  // Every language version of this page, linked by @sanity/document-internationalization\n  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{\n    language,\n    "slug": value->slug.current,\n    "isHome": value._ref in *[_type == "settings"].homePage._ref\n  }\n }\n': PAGE_QUERY_RESULT;
     '\n  *[_type == "page" && language == $language && defined(slug.current)]{ "slug": slug.current }\n': PAGE_SLUGS_QUERY_RESULT;
   }
 }

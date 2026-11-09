@@ -1,8 +1,11 @@
 import type {Metadata} from 'next'
 import {Geist, Geist_Mono} from 'next/font/google'
+import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
+import {VisualEditing} from 'next-sanity/visual-editing'
 
+import {DisableDraftMode} from '@/components/DisableDraftMode'
 import {SanityLink} from '@/components/SanityLink'
 import {hasLanguage, LANGUAGES, type Language} from '@/i18n'
 import {cachedSanity, SanityLive} from '@/sanity/live'
@@ -52,6 +55,7 @@ export default async function RootLayout(props: LayoutProps<'/[lang]'>) {
   if (!hasLanguage(lang)) notFound()
 
   const settings = await getSettings(lang)
+  const {isEnabled: isDraftMode} = await draftMode()
 
   return (
     <html
@@ -59,7 +63,7 @@ export default async function RootLayout(props: LayoutProps<'/[lang]'>) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-        <header className="border-b border-black/10 dark:border-white/10">
+        <header className="border-b border-line">
           <nav className="mx-auto flex w-full max-w-5xl items-center justify-between gap-6 px-6 py-4">
             <Link href={`/${lang}`} className="font-semibold">
               {settings?.title ?? 'test-web-team'}
@@ -76,7 +80,13 @@ export default async function RootLayout(props: LayoutProps<'/[lang]'>) {
           </nav>
         </header>
         <main className="flex flex-1 flex-col">{props.children}</main>
-        <SanityLive includeDrafts={false} />
+        <SanityLive includeDrafts={isDraftMode} />
+        {isDraftMode && (
+          <>
+            <VisualEditing />
+            <DisableDraftMode />
+          </>
+        )}
       </body>
     </html>
   )

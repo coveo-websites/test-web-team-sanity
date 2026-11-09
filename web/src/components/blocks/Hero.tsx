@@ -16,7 +16,7 @@ export function Hero({title, text, image, links, headingLevel = 'h2'}: Props) {
         {title && (
           <Heading className="text-4xl font-semibold tracking-tight md:text-5xl">{title}</Heading>
         )}
-        {text && <p className="text-lg text-zinc-600 dark:text-zinc-400">{text}</p>}
+        {text && <p className="text-lg text-muted">{text}</p>}
         {links && links.length > 0 && (
           <div className="flex flex-wrap gap-3">
             {links.map((link, i) => (
@@ -26,8 +26,8 @@ export function Hero({title, text, image, links, headingLevel = 'h2'}: Props) {
                 href={link.href}
                 className={
                   i === 0
-                    ? 'rounded-full bg-foreground px-5 py-2.5 font-medium text-background'
-                    : 'rounded-full border border-black/10 px-5 py-2.5 font-medium dark:border-white/20'
+                    ? 'btn-primary'
+                    : 'btn-secondary'
                 }
               />
             ))}

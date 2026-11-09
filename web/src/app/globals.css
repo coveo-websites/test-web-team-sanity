@@ -1,26 +1,96 @@
 @import "tailwindcss";
 
+/*
+ * Colors taken from coveo.com's design tokens (--primitive-color-*), Nov 2026.
+ * Components use the semantic names below (bg-surface, text-muted, border-line, …),
+ * so a palette change only touches this file.
+ */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0e0f12; /* body text on coveo.com */
+  --muted: #676d7a; /* secondary text */
+  --line: #e5e8e8; /* borders and dividers */
+  --surface: #f1f1ff; /* govsblue-1: soft lavender panels */
+  --surface-subtle: #f9f9ff; /* govsblue-0 */
+  --brand: #5500aa; /* neopurple-6: primary purple */
+  --brand-strong: #270054; /* neopurple-8: dark purple sections and buttons */
+  --brand-deep: #180037; /* neopurple-9 */
+  --on-brand: #ffffff;
+  --accent: #1cebcf; /* bright turquoise */
+  --accent-2: #00adff; /* cerulean */
+  --link: #1169da;
+  --danger: #f05245; /* pomegranate */
+}
+
+/* Light only, like coveo.com: the site ignores the visitor's dark mode setting. */
+:root {
+  color-scheme: light;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-surface: var(--surface);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-deep: var(--brand-deep);
+  --color-on-brand: var(--on-brand);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-link: var(--link);
+  --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Main call to action: turquoise → cerulean pill with dark text, like "Schedule a Demo". */
+@utility btn-primary {
+  display: inline-block;
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  color: #0e0f12;
+  background-image: linear-gradient(270deg, var(--accent), var(--accent) 50%, var(--accent-2));
+  background-size: 200% 100%;
+  background-position: right;
+  transition: background-position 0.3s ease;
+  &:hover {
+    background-position: left;
   }
+}
+
+/* Secondary action: solid dark purple pill. */
+@utility btn-secondary {
+  display: inline-block;
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  color: var(--on-brand);
+  background-color: var(--brand-strong);
+  transition: background-color 0.2s ease;
+  &:hover {
+    background-color: var(--brand-deep);
+  }
+}
+
+/* Gradient text for highlighted words, as in coveo.com headlines. */
+@utility text-gradient {
+  background-image: linear-gradient(90deg, #18d4bb, #00adff 40%, #1169da 70%, #2e45ba);
+  background-clip: text;
+  color: transparent;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
 }

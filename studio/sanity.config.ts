@@ -3,7 +3,9 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {documentInternationalization} from '@sanity/document-internationalization'
 import {CogIcon} from '@sanity/icons/Cog'
-import {LANGUAGES} from './languages'
+import {presentationTool} from 'sanity/presentation'
+import {DEFAULT_LANGUAGE, LANGUAGES} from './languages'
+import {resolve} from './presentation/resolve'
 import {schemaTypes} from './schemaTypes'
 import {structure} from './structure'
 
@@ -45,9 +47,24 @@ const sharedConfig = {
   },
 }
 
+// The Next.js site that the Presentation tool shows. It reads the production dataset,
+// so the visual editor is only added to the production workspace.
+const previewOrigin = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
+
+const visualEditor = presentationTool({
+  title: 'Visual editor',
+  resolve,
+  previewUrl: {
+    initial: `${previewOrigin}/${DEFAULT_LANGUAGE}`,
+    previewMode: {enable: '/api/draft-mode/enable'},
+  },
+  allowOrigins: [previewOrigin],
+})
+
 export default defineConfig([
   {
     ...sharedConfig,
+    plugins: [visualEditor, ...sharedConfig.plugins],
     name: 'production',
     title: 'test-web-team',
     subtitle: 'Production',
