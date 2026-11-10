@@ -12,7 +12,7 @@ import {structure} from './structure'
 const projectId = 't5oqz7o2'
 
 // Types translated as one document per language
-const LOCALIZED_TYPES = ['page']
+const LOCALIZED_TYPES = ['page', 'resource']
 
 // Shared by every workspace so production and staging always have the same schema and Studio.
 const sharedConfig = {

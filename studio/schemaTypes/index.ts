@@ -11,6 +11,7 @@ import {statsType} from './blocks/statsType'
 import {testimonialsType} from './blocks/testimonialsType'
 import {videoType} from './blocks/videoType'
 import {pageType} from './documents/pageType'
+import {resourceType} from './documents/resourceType'
 import {settingsType} from './documents/settingsType'
 import {linkType} from './objects/linkType'
 import {seoType} from './objects/seoType'
@@ -19,6 +20,7 @@ import {pageBuilderType} from './pageBuilderType'
 export const schemaTypes = [
   // Documents
   pageType,
+  resourceType,
   settingsType,
   // Page builder
   pageBuilderType,
