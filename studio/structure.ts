@@ -22,7 +22,7 @@ function languageLists(S: StructureBuilder, schemaType: string, title: string) {
   return [
     ...LANGUAGES.map((language) =>
       S.listItem()
-        .id(`${title.toLowerCase()}-${language.id}`)
+        .id(`${schemaType}-${language.id}`)
         .title(`${language.title} (${language.id.toUpperCase()})`)
         .icon(TranslateIcon)
         .child(
