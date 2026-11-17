@@ -2,12 +2,8 @@ import {defineQuery} from 'next-sanity'
 
 const LINK_FIELDS = /* groq */ `_key, label, href`
 
-const PAGE_FIELDS = /* groq */ `
-  _id,
-  title,
-  language,
-  "slug": slug.current,
-  seo,
+// Page-builder blocks, shared by pages and resources so one PageBuilder renders both
+const CONTENT_PROJECTION = /* groq */ `
   content[]{
     _key,
     _type,
@@ -31,7 +27,26 @@ const PAGE_FIELDS = /* groq */ `
       hubspotPortalId,
       hubspotFormId
     }
-  },
+  }
+`
+
+const FORM_FIELDS = /* groq */ `
+  title,
+  intro,
+  fields[]{ _key, label, name, type, choices, required, placeholder },
+  submitLabel,
+  successMessage,
+  hubspotPortalId,
+  hubspotFormId
+`
+
+const PAGE_FIELDS = /* groq */ `
+  _id,
+  title,
+  language,
+  "slug": slug.current,
+  seo,
+  ${CONTENT_PROJECTION},
   // Every language version of this page, linked by @sanity/document-internationalization
   "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{
     language,
@@ -59,4 +74,67 @@ export const PAGE_QUERY = defineQuery(`
 
 export const PAGE_SLUGS_QUERY = defineQuery(`
   *[_type == "page" && language == $language && defined(slug.current)]{ "slug": slug.current }
+`)
+
+const RESOURCE_CARD_FIELDS = /* groq */ `
+  _id,
+  _type,
+  title,
+  "slug": slug.current,
+  summary,
+  coverImage,
+  publishDate,
+  topics
+`
+
+// Ebooks, case studies, reports and webinars; the type-specific fields depend on _type.
+// The file URL is only sent for ungated resources so the gate can't be bypassed from the page data.
+const RESOURCE_FIELDS = /* groq */ `
+  ${RESOURCE_CARD_FIELDS},
+  language,
+  seo,
+  "gate": gate{ _type, "_key": "gate", ${FORM_FIELDS} },
+  "downloadUrl": select(defined(gate.fields) => null, file.asset->url),
+  _type == "ebook" => { authors, pageCount, tableOfContents },
+  _type == "report" => { edition, pageCount, keyFindings },
+  _type == "caseStudy" => {
+    customer,
+    customerLogo,
+    industry,
+    challenge,
+    solution,
+    results,
+    metrics[]{ _key, value, label },
+    quote{ text, person, role }
+  },
+  _type == "webinar" => {
+    status,
+    startsAt,
+    durationMinutes,
+    registrationUrl,
+    recordingUrl,
+    speakers[]{ _key, name, role, company, photo }
+  },
+  ${CONTENT_PROJECTION},
+  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{
+    language,
+    "slug": value->slug.current,
+    "isHome": false
+  }
+`
+
+export const RESOURCE_QUERY = defineQuery(`
+  *[_type == $type && language == $language && slug.current == $slug][0]{ ${RESOURCE_FIELDS} }
+`)
+
+export const RESOURCE_SLUGS_QUERY = defineQuery(`
+  *[_type in $types && language == $language && defined(slug.current)]{
+    _type,
+    "slug": slug.current
+  }
+`)
+
+export const RESOURCE_LIST_QUERY = defineQuery(`
+  *[_type in $types && language == $language && defined(slug.current)]
+    | order(publishDate desc, _createdAt desc){ ${RESOURCE_CARD_FIELDS} }
 `)
