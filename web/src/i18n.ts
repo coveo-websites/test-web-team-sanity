@@ -2,6 +2,7 @@
 export const LANGUAGES = [
   {id: 'en', title: 'English'},
   {id: 'fr', title: 'Français'},
+  {id: 'de', title: 'German'},
 ] as const
 
 export type Language = (typeof LANGUAGES)[number]['id']

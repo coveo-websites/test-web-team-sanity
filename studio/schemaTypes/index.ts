@@ -12,6 +12,10 @@ import {testimonialsType} from './blocks/testimonialsType'
 import {videoType} from './blocks/videoType'
 import {pageType} from './documents/pageType'
 import {resourceType} from './documents/resourceType'
+import {caseStudyType} from './documents/resources/caseStudyType'
+import {ebookType} from './documents/resources/ebookType'
+import {reportType} from './documents/resources/reportType'
+import {webinarType} from './documents/resources/webinarType'
 import {settingsType} from './documents/settingsType'
 import {linkType} from './objects/linkType'
 import {seoType} from './objects/seoType'
@@ -21,6 +25,10 @@ export const schemaTypes = [
   // Documents
   pageType,
   resourceType,
+  ebookType,
+  caseStudyType,
+  reportType,
+  webinarType,
   settingsType,
   // Page builder
   pageBuilderType,

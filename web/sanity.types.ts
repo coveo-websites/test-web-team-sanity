@@ -350,21 +350,94 @@ export type InternationalizedArrayReference = Array<
   } & InternationalizedArrayReferenceValue
 >;
 
+export type ResourceReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "resource";
+};
+
+export type EbookReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "ebook";
+};
+
+export type CaseStudyReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "caseStudy";
+};
+
+export type ReportReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "report";
+};
+
+export type WebinarReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "webinar";
+};
+
 export type InternationalizedArrayReferenceValue = {
   _type: "internationalizedArrayReferenceValue";
-  value?: PageReference;
+  value?:
+    | PageReference
+    | ResourceReference
+    | EbookReference
+    | CaseStudyReference
+    | ReportReference
+    | WebinarReference;
   language?: string;
 };
 
-export type Page = {
+export type Webinar = {
   _id: string;
-  _type: "page";
+  _type: "webinar";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   language?: string;
   title?: string;
   slug?: Slug;
+  summary?: string;
+  coverImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  topics?: Array<string>;
+  publishDate?: string;
+  status?: "upcoming" | "onDemand";
+  startsAt?: string;
+  durationMinutes?: number;
+  registrationUrl?: string;
+  recordingUrl?: string;
+  speakers?: Array<{
+    name?: string;
+    role?: string;
+    company?: string;
+    photo?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+    _type: "speaker";
+    _key: string;
+  }>;
+  gate?: Form;
   content?: PageBuilder;
   seo?: Seo;
 };
@@ -389,6 +462,154 @@ export type Slug = {
   _type: "slug";
   current?: string;
   source?: string;
+};
+
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type Report = {
+  _id: string;
+  _type: "report";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  language?: string;
+  title?: string;
+  slug?: Slug;
+  summary?: string;
+  coverImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  topics?: Array<string>;
+  publishDate?: string;
+  edition?: string;
+  file?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  keyFindings?: Array<string>;
+  pageCount?: number;
+  gate?: Form;
+  content?: PageBuilder;
+  seo?: Seo;
+};
+
+export type CaseStudy = {
+  _id: string;
+  _type: "caseStudy";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  language?: string;
+  title?: string;
+  slug?: Slug;
+  summary?: string;
+  coverImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  topics?: Array<string>;
+  publishDate?: string;
+  customer?: string;
+  customerLogo?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  industry?: string;
+  challenge?: string;
+  solution?: string;
+  results?: string;
+  metrics?: Array<{
+    value?: string;
+    label?: string;
+    _type: "metric";
+    _key: string;
+  }>;
+  quote?: {
+    text?: string;
+    person?: string;
+    role?: string;
+  };
+  gate?: Form;
+  content?: PageBuilder;
+  seo?: Seo;
+};
+
+export type Ebook = {
+  _id: string;
+  _type: "ebook";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  language?: string;
+  title?: string;
+  slug?: Slug;
+  summary?: string;
+  coverImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  topics?: Array<string>;
+  publishDate?: string;
+  authors?: Array<string>;
+  pageCount?: number;
+  file?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  tableOfContents?: Array<string>;
+  gate?: Form;
+  content?: PageBuilder;
+  seo?: Seo;
+};
+
+export type Resource = {
+  _id: string;
+  _type: "resource";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  language?: string;
+  title?: string;
+  slug?: Slug;
+  content?: PageBuilder;
+  seo?: Seo;
+};
+
+export type Page = {
+  _id: string;
+  _type: "page";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  language?: string;
+  title?: string;
+  slug?: Slug;
+  content?: PageBuilder;
+  seo?: Seo;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -512,11 +733,22 @@ export type AllSanitySchemaTypes =
   | Settings
   | TranslationMetadata
   | InternationalizedArrayReference
+  | ResourceReference
+  | EbookReference
+  | CaseStudyReference
+  | ReportReference
+  | WebinarReference
   | InternationalizedArrayReferenceValue
-  | Page
+  | Webinar
   | SanityImageCrop
   | SanityImageHotspot
   | Slug
+  | SanityFileAssetReference
+  | Report
+  | CaseStudy
+  | Ebook
+  | Resource
+  | Page
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -558,7 +790,7 @@ export type SETTINGS_QUERY_RESULT =
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: HOME_PAGE_QUERY
-// Query: *[_id == "settings-" + $language][0].homePage->{   _id,  title,  language,  "slug": slug.current,  seo,  content[]{    _key,    _type,    _type == "hero" => { title, text, image, links[]{ _key, label, href } },    _type == "features" => { title, intro, items[]{ _key, title, text } },    _type == "splitImage" => { orientation, title, body, image },    _type == "callToAction" => { title, text, links[]{ _key, label, href } },    _type == "richText" => { title, body },    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },    _type == "video" => { title, url, caption },    _type == "faq" => { title, items[]{ _key, question, answer } },    _type == "stats" => { title, items[]{ _key, value, label } },    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },    _type == "form" => {      title,      intro,      fields[]{ _key, label, name, type, choices, required, placeholder },      submitLabel,      successMessage,      hubspotPortalId,      hubspotFormId    }  },  // Every language version of this page, linked by @sanity/document-internationalization  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{    language,    "slug": value->slug.current,    "isHome": value._ref in *[_type == "settings"].homePage._ref  } }
+// Query: *[_id == "settings-" + $language][0].homePage->{   _id,  title,  language,  "slug": slug.current,  seo,    content[]{    _key,    _type,    _type == "hero" => { title, text, image, links[]{ _key, label, href } },    _type == "features" => { title, intro, items[]{ _key, title, text } },    _type == "splitImage" => { orientation, title, body, image },    _type == "callToAction" => { title, text, links[]{ _key, label, href } },    _type == "richText" => { title, body },    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },    _type == "video" => { title, url, caption },    _type == "faq" => { title, items[]{ _key, question, answer } },    _type == "stats" => { title, items[]{ _key, value, label } },    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },    _type == "form" => {      title,      intro,      fields[]{ _key, label, name, type, choices, required, placeholder },      submitLabel,      successMessage,      hubspotPortalId,      hubspotFormId    }  },  // Every language version of this page, linked by @sanity/document-internationalization  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{    language,    "slug": value->slug.current,    "isHome": value._ref in *[_type == "settings"].homePage._ref  } }
 export type HOME_PAGE_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -783,7 +1015,7 @@ export type HOME_PAGE_QUERY_RESULT = {
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && language == $language && slug.current == $slug][0]{   _id,  title,  language,  "slug": slug.current,  seo,  content[]{    _key,    _type,    _type == "hero" => { title, text, image, links[]{ _key, label, href } },    _type == "features" => { title, intro, items[]{ _key, title, text } },    _type == "splitImage" => { orientation, title, body, image },    _type == "callToAction" => { title, text, links[]{ _key, label, href } },    _type == "richText" => { title, body },    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },    _type == "video" => { title, url, caption },    _type == "faq" => { title, items[]{ _key, question, answer } },    _type == "stats" => { title, items[]{ _key, value, label } },    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },    _type == "form" => {      title,      intro,      fields[]{ _key, label, name, type, choices, required, placeholder },      submitLabel,      successMessage,      hubspotPortalId,      hubspotFormId    }  },  // Every language version of this page, linked by @sanity/document-internationalization  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{    language,    "slug": value->slug.current,    "isHome": value._ref in *[_type == "settings"].homePage._ref  } }
+// Query: *[_type == "page" && language == $language && slug.current == $slug][0]{   _id,  title,  language,  "slug": slug.current,  seo,    content[]{    _key,    _type,    _type == "hero" => { title, text, image, links[]{ _key, label, href } },    _type == "features" => { title, intro, items[]{ _key, title, text } },    _type == "splitImage" => { orientation, title, body, image },    _type == "callToAction" => { title, text, links[]{ _key, label, href } },    _type == "richText" => { title, body },    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },    _type == "video" => { title, url, caption },    _type == "faq" => { title, items[]{ _key, question, answer } },    _type == "stats" => { title, items[]{ _key, value, label } },    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },    _type == "form" => {      title,      intro,      fields[]{ _key, label, name, type, choices, required, placeholder },      submitLabel,      successMessage,      hubspotPortalId,      hubspotFormId    }  },  // Every language version of this page, linked by @sanity/document-internationalization  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{    language,    "slug": value->slug.current,    "isHome": value._ref in *[_type == "settings"].homePage._ref  } }
 export type PAGE_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -1013,13 +1245,1812 @@ export type PAGE_SLUGS_QUERY_RESULT = Array<{
   slug: string | null;
 }>;
 
+// Source: ../web/src/sanity/queries.ts
+// Variable: RESOURCE_QUERY
+// Query: *[_type == $type && language == $language && slug.current == $slug][0]{     _id,  _type,  title,  "slug": slug.current,  summary,  coverImage,  publishDate,  topics,  language,  seo,  "gate": gate{ _type, "_key": "gate",   title,  intro,  fields[]{ _key, label, name, type, choices, required, placeholder },  submitLabel,  successMessage,  hubspotPortalId,  hubspotFormId },  "downloadUrl": select(defined(gate.fields) => null, file.asset->url),  _type == "ebook" => { authors, pageCount, tableOfContents },  _type == "report" => { edition, pageCount, keyFindings },  _type == "caseStudy" => {    customer,    customerLogo,    industry,    challenge,    solution,    results,    metrics[]{ _key, value, label },    quote{ text, person, role }  },  _type == "webinar" => {    status,    startsAt,    durationMinutes,    registrationUrl,    recordingUrl,    speakers[]{ _key, name, role, company, photo }  },    content[]{    _key,    _type,    _type == "hero" => { title, text, image, links[]{ _key, label, href } },    _type == "features" => { title, intro, items[]{ _key, title, text } },    _type == "splitImage" => { orientation, title, body, image },    _type == "callToAction" => { title, text, links[]{ _key, label, href } },    _type == "richText" => { title, body },    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },    _type == "video" => { title, url, caption },    _type == "faq" => { title, items[]{ _key, question, answer } },    _type == "stats" => { title, items[]{ _key, value, label } },    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },    _type == "form" => {      title,      intro,      fields[]{ _key, label, name, type, choices, required, placeholder },      submitLabel,      successMessage,      hubspotPortalId,      hubspotFormId    }  },  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{    language,    "slug": value->slug.current,    "isHome": false  } }
+export type RESOURCE_QUERY_RESULT =
+  | {
+      _id: string;
+      _type: "caseStudy";
+      title: string | null;
+      slug: string | null;
+      summary: string | null;
+      coverImage: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      publishDate: string | null;
+      topics: Array<string> | null;
+      language: string | null;
+      seo: Seo | null;
+      gate: {
+        _type: "form";
+        _key: "gate";
+        title: string | null;
+        intro: string | null;
+        fields: Array<{
+          _key: string;
+          label: string | null;
+          name: string | null;
+          type:
+            | "checkbox"
+            | "email"
+            | "select"
+            | "tel"
+            | "text"
+            | "textarea"
+            | null;
+          choices: Array<string> | null;
+          required: boolean | null;
+          placeholder: string | null;
+        }> | null;
+        submitLabel: string | null;
+        successMessage: string | null;
+        hubspotPortalId: string | null;
+        hubspotFormId: string | null;
+      } | null;
+      downloadUrl: null;
+      customer: string | null;
+      customerLogo: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      industry: string | null;
+      challenge: string | null;
+      solution: string | null;
+      results: string | null;
+      metrics: Array<{
+        _key: string;
+        value: string | null;
+        label: string | null;
+      }> | null;
+      quote: {
+        text: string | null;
+        person: string | null;
+        role: string | null;
+      } | null;
+      content: Array<
+        | {
+            _key: string;
+            _type: "callToAction";
+            title: string | null;
+            text: string | null;
+            links: Array<{
+              _key: string;
+              label: string | null;
+              href: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "cardGrid";
+            title: string | null;
+            intro: string | null;
+            cards: Array<{
+              _key: string;
+              title: string | null;
+              text: string | null;
+              image: CardImage | null;
+              link: {
+                label: string | null;
+                href: string | null;
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "faq";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              question: string | null;
+              answer: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<{
+                  href?: string;
+                  _type: "link";
+                  _key: string;
+                }>;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }> | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "features";
+            title: string | null;
+            intro: string | null;
+            items: Array<{
+              _key: string;
+              title: string | null;
+              text: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "form";
+            title: string | null;
+            intro: string | null;
+            fields: Array<{
+              _key: string;
+              label: string | null;
+              name: string | null;
+              type:
+                | "checkbox"
+                | "email"
+                | "select"
+                | "tel"
+                | "text"
+                | "textarea"
+                | null;
+              choices: Array<string> | null;
+              required: boolean | null;
+              placeholder: string | null;
+            }> | null;
+            submitLabel: string | null;
+            successMessage: string | null;
+            hubspotPortalId: string | null;
+            hubspotFormId: string | null;
+          }
+        | {
+            _key: string;
+            _type: "hero";
+            title: string | null;
+            text: string | null;
+            image: {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+            links: Array<{
+              _key: string;
+              label: string | null;
+              href: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "logoCloud";
+            title: string | null;
+            logos: Array<{
+              _key: string;
+              name: string | null;
+              href: string | null;
+              image: LogoImage | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "richText";
+            title: string | null;
+            body: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "blockquote" | "h3" | "h4" | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<{
+                href?: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "splitImage";
+            orientation: "imageLeft" | "imageRight" | null;
+            title: string | null;
+            body: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?:
+                | "blockquote"
+                | "h1"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<{
+                href?: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }> | null;
+            image: {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "stats";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              value: string | null;
+              label: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "testimonials";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              quote: string | null;
+              name: string | null;
+              role: string | null;
+              company: string | null;
+              photo: Photo | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "video";
+            title: string | null;
+            url: string | null;
+            caption: string | null;
+          }
+      > | null;
+      translations: Array<{
+        language: string | null;
+        slug: string | null;
+        isHome: false;
+      }> | null;
+    }
+  | {
+      _id: string;
+      _type: "ebook";
+      title: string | null;
+      slug: string | null;
+      summary: string | null;
+      coverImage: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      publishDate: string | null;
+      topics: Array<string> | null;
+      language: string | null;
+      seo: Seo | null;
+      gate: {
+        _type: "form";
+        _key: "gate";
+        title: string | null;
+        intro: string | null;
+        fields: Array<{
+          _key: string;
+          label: string | null;
+          name: string | null;
+          type:
+            | "checkbox"
+            | "email"
+            | "select"
+            | "tel"
+            | "text"
+            | "textarea"
+            | null;
+          choices: Array<string> | null;
+          required: boolean | null;
+          placeholder: string | null;
+        }> | null;
+        submitLabel: string | null;
+        successMessage: string | null;
+        hubspotPortalId: string | null;
+        hubspotFormId: string | null;
+      } | null;
+      downloadUrl: null | string;
+      authors: Array<string> | null;
+      pageCount: number | null;
+      tableOfContents: Array<string> | null;
+      content: Array<
+        | {
+            _key: string;
+            _type: "callToAction";
+            title: string | null;
+            text: string | null;
+            links: Array<{
+              _key: string;
+              label: string | null;
+              href: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "cardGrid";
+            title: string | null;
+            intro: string | null;
+            cards: Array<{
+              _key: string;
+              title: string | null;
+              text: string | null;
+              image: CardImage | null;
+              link: {
+                label: string | null;
+                href: string | null;
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "faq";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              question: string | null;
+              answer: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<{
+                  href?: string;
+                  _type: "link";
+                  _key: string;
+                }>;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }> | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "features";
+            title: string | null;
+            intro: string | null;
+            items: Array<{
+              _key: string;
+              title: string | null;
+              text: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "form";
+            title: string | null;
+            intro: string | null;
+            fields: Array<{
+              _key: string;
+              label: string | null;
+              name: string | null;
+              type:
+                | "checkbox"
+                | "email"
+                | "select"
+                | "tel"
+                | "text"
+                | "textarea"
+                | null;
+              choices: Array<string> | null;
+              required: boolean | null;
+              placeholder: string | null;
+            }> | null;
+            submitLabel: string | null;
+            successMessage: string | null;
+            hubspotPortalId: string | null;
+            hubspotFormId: string | null;
+          }
+        | {
+            _key: string;
+            _type: "hero";
+            title: string | null;
+            text: string | null;
+            image: {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+            links: Array<{
+              _key: string;
+              label: string | null;
+              href: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "logoCloud";
+            title: string | null;
+            logos: Array<{
+              _key: string;
+              name: string | null;
+              href: string | null;
+              image: LogoImage | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "richText";
+            title: string | null;
+            body: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "blockquote" | "h3" | "h4" | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<{
+                href?: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "splitImage";
+            orientation: "imageLeft" | "imageRight" | null;
+            title: string | null;
+            body: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?:
+                | "blockquote"
+                | "h1"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<{
+                href?: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }> | null;
+            image: {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "stats";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              value: string | null;
+              label: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "testimonials";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              quote: string | null;
+              name: string | null;
+              role: string | null;
+              company: string | null;
+              photo: Photo | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "video";
+            title: string | null;
+            url: string | null;
+            caption: string | null;
+          }
+      > | null;
+      translations: Array<{
+        language: string | null;
+        slug: string | null;
+        isHome: false;
+      }> | null;
+    }
+  | {
+      _id: string;
+      _type: "page";
+      title: string | null;
+      slug: string | null;
+      summary: null;
+      coverImage: null;
+      publishDate: null;
+      topics: null;
+      language: string | null;
+      seo: Seo | null;
+      gate: null;
+      downloadUrl: null;
+      content: Array<
+        | {
+            _key: string;
+            _type: "callToAction";
+            title: string | null;
+            text: string | null;
+            links: Array<{
+              _key: string;
+              label: string | null;
+              href: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "cardGrid";
+            title: string | null;
+            intro: string | null;
+            cards: Array<{
+              _key: string;
+              title: string | null;
+              text: string | null;
+              image: CardImage | null;
+              link: {
+                label: string | null;
+                href: string | null;
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "faq";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              question: string | null;
+              answer: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<{
+                  href?: string;
+                  _type: "link";
+                  _key: string;
+                }>;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }> | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "features";
+            title: string | null;
+            intro: string | null;
+            items: Array<{
+              _key: string;
+              title: string | null;
+              text: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "form";
+            title: string | null;
+            intro: string | null;
+            fields: Array<{
+              _key: string;
+              label: string | null;
+              name: string | null;
+              type:
+                | "checkbox"
+                | "email"
+                | "select"
+                | "tel"
+                | "text"
+                | "textarea"
+                | null;
+              choices: Array<string> | null;
+              required: boolean | null;
+              placeholder: string | null;
+            }> | null;
+            submitLabel: string | null;
+            successMessage: string | null;
+            hubspotPortalId: string | null;
+            hubspotFormId: string | null;
+          }
+        | {
+            _key: string;
+            _type: "hero";
+            title: string | null;
+            text: string | null;
+            image: {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+            links: Array<{
+              _key: string;
+              label: string | null;
+              href: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "logoCloud";
+            title: string | null;
+            logos: Array<{
+              _key: string;
+              name: string | null;
+              href: string | null;
+              image: LogoImage | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "richText";
+            title: string | null;
+            body: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "blockquote" | "h3" | "h4" | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<{
+                href?: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "splitImage";
+            orientation: "imageLeft" | "imageRight" | null;
+            title: string | null;
+            body: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?:
+                | "blockquote"
+                | "h1"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<{
+                href?: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }> | null;
+            image: {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "stats";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              value: string | null;
+              label: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "testimonials";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              quote: string | null;
+              name: string | null;
+              role: string | null;
+              company: string | null;
+              photo: Photo | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "video";
+            title: string | null;
+            url: string | null;
+            caption: string | null;
+          }
+      > | null;
+      translations: Array<{
+        language: string | null;
+        slug: string | null;
+        isHome: false;
+      }> | null;
+    }
+  | {
+      _id: string;
+      _type: "report";
+      title: string | null;
+      slug: string | null;
+      summary: string | null;
+      coverImage: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      publishDate: string | null;
+      topics: Array<string> | null;
+      language: string | null;
+      seo: Seo | null;
+      gate: {
+        _type: "form";
+        _key: "gate";
+        title: string | null;
+        intro: string | null;
+        fields: Array<{
+          _key: string;
+          label: string | null;
+          name: string | null;
+          type:
+            | "checkbox"
+            | "email"
+            | "select"
+            | "tel"
+            | "text"
+            | "textarea"
+            | null;
+          choices: Array<string> | null;
+          required: boolean | null;
+          placeholder: string | null;
+        }> | null;
+        submitLabel: string | null;
+        successMessage: string | null;
+        hubspotPortalId: string | null;
+        hubspotFormId: string | null;
+      } | null;
+      downloadUrl: null | string;
+      edition: string | null;
+      pageCount: number | null;
+      keyFindings: Array<string> | null;
+      content: Array<
+        | {
+            _key: string;
+            _type: "callToAction";
+            title: string | null;
+            text: string | null;
+            links: Array<{
+              _key: string;
+              label: string | null;
+              href: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "cardGrid";
+            title: string | null;
+            intro: string | null;
+            cards: Array<{
+              _key: string;
+              title: string | null;
+              text: string | null;
+              image: CardImage | null;
+              link: {
+                label: string | null;
+                href: string | null;
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "faq";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              question: string | null;
+              answer: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<{
+                  href?: string;
+                  _type: "link";
+                  _key: string;
+                }>;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }> | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "features";
+            title: string | null;
+            intro: string | null;
+            items: Array<{
+              _key: string;
+              title: string | null;
+              text: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "form";
+            title: string | null;
+            intro: string | null;
+            fields: Array<{
+              _key: string;
+              label: string | null;
+              name: string | null;
+              type:
+                | "checkbox"
+                | "email"
+                | "select"
+                | "tel"
+                | "text"
+                | "textarea"
+                | null;
+              choices: Array<string> | null;
+              required: boolean | null;
+              placeholder: string | null;
+            }> | null;
+            submitLabel: string | null;
+            successMessage: string | null;
+            hubspotPortalId: string | null;
+            hubspotFormId: string | null;
+          }
+        | {
+            _key: string;
+            _type: "hero";
+            title: string | null;
+            text: string | null;
+            image: {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+            links: Array<{
+              _key: string;
+              label: string | null;
+              href: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "logoCloud";
+            title: string | null;
+            logos: Array<{
+              _key: string;
+              name: string | null;
+              href: string | null;
+              image: LogoImage | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "richText";
+            title: string | null;
+            body: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "blockquote" | "h3" | "h4" | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<{
+                href?: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "splitImage";
+            orientation: "imageLeft" | "imageRight" | null;
+            title: string | null;
+            body: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?:
+                | "blockquote"
+                | "h1"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<{
+                href?: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }> | null;
+            image: {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "stats";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              value: string | null;
+              label: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "testimonials";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              quote: string | null;
+              name: string | null;
+              role: string | null;
+              company: string | null;
+              photo: Photo | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "video";
+            title: string | null;
+            url: string | null;
+            caption: string | null;
+          }
+      > | null;
+      translations: Array<{
+        language: string | null;
+        slug: string | null;
+        isHome: false;
+      }> | null;
+    }
+  | {
+      _id: string;
+      _type: "resource";
+      title: string | null;
+      slug: string | null;
+      summary: null;
+      coverImage: null;
+      publishDate: null;
+      topics: null;
+      language: string | null;
+      seo: Seo | null;
+      gate: null;
+      downloadUrl: null;
+      content: Array<
+        | {
+            _key: string;
+            _type: "callToAction";
+            title: string | null;
+            text: string | null;
+            links: Array<{
+              _key: string;
+              label: string | null;
+              href: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "cardGrid";
+            title: string | null;
+            intro: string | null;
+            cards: Array<{
+              _key: string;
+              title: string | null;
+              text: string | null;
+              image: CardImage | null;
+              link: {
+                label: string | null;
+                href: string | null;
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "faq";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              question: string | null;
+              answer: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<{
+                  href?: string;
+                  _type: "link";
+                  _key: string;
+                }>;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }> | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "features";
+            title: string | null;
+            intro: string | null;
+            items: Array<{
+              _key: string;
+              title: string | null;
+              text: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "form";
+            title: string | null;
+            intro: string | null;
+            fields: Array<{
+              _key: string;
+              label: string | null;
+              name: string | null;
+              type:
+                | "checkbox"
+                | "email"
+                | "select"
+                | "tel"
+                | "text"
+                | "textarea"
+                | null;
+              choices: Array<string> | null;
+              required: boolean | null;
+              placeholder: string | null;
+            }> | null;
+            submitLabel: string | null;
+            successMessage: string | null;
+            hubspotPortalId: string | null;
+            hubspotFormId: string | null;
+          }
+        | {
+            _key: string;
+            _type: "hero";
+            title: string | null;
+            text: string | null;
+            image: {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+            links: Array<{
+              _key: string;
+              label: string | null;
+              href: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "logoCloud";
+            title: string | null;
+            logos: Array<{
+              _key: string;
+              name: string | null;
+              href: string | null;
+              image: LogoImage | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "richText";
+            title: string | null;
+            body: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "blockquote" | "h3" | "h4" | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<{
+                href?: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "splitImage";
+            orientation: "imageLeft" | "imageRight" | null;
+            title: string | null;
+            body: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?:
+                | "blockquote"
+                | "h1"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<{
+                href?: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }> | null;
+            image: {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "stats";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              value: string | null;
+              label: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "testimonials";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              quote: string | null;
+              name: string | null;
+              role: string | null;
+              company: string | null;
+              photo: Photo | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "video";
+            title: string | null;
+            url: string | null;
+            caption: string | null;
+          }
+      > | null;
+      translations: Array<{
+        language: string | null;
+        slug: string | null;
+        isHome: false;
+      }> | null;
+    }
+  | {
+      _id: string;
+      _type: "sanity.fileAsset";
+      title: string | null;
+      slug: null;
+      summary: null;
+      coverImage: null;
+      publishDate: null;
+      topics: null;
+      language: null;
+      seo: null;
+      gate: null;
+      downloadUrl: null;
+      content: null;
+      translations: Array<{
+        language: string | null;
+        slug: string | null;
+        isHome: false;
+      }> | null;
+    }
+  | {
+      _id: string;
+      _type: "sanity.imageAsset";
+      title: string | null;
+      slug: null;
+      summary: null;
+      coverImage: null;
+      publishDate: null;
+      topics: null;
+      language: null;
+      seo: null;
+      gate: null;
+      downloadUrl: null;
+      content: null;
+      translations: Array<{
+        language: string | null;
+        slug: string | null;
+        isHome: false;
+      }> | null;
+    }
+  | {
+      _id: string;
+      _type: "settings";
+      title: string | null;
+      slug: null;
+      summary: null;
+      coverImage: null;
+      publishDate: null;
+      topics: null;
+      language: string | null;
+      seo: null;
+      gate: null;
+      downloadUrl: null;
+      content: null;
+      translations: Array<{
+        language: string | null;
+        slug: string | null;
+        isHome: false;
+      }> | null;
+    }
+  | {
+      _id: string;
+      _type: "translation.metadata";
+      title: null;
+      slug: null;
+      summary: null;
+      coverImage: null;
+      publishDate: null;
+      topics: null;
+      language: null;
+      seo: null;
+      gate: null;
+      downloadUrl: null;
+      content: null;
+      translations: Array<{
+        language: string | null;
+        slug: string | null;
+        isHome: false;
+      }> | null;
+    }
+  | {
+      _id: string;
+      _type: "webinar";
+      title: string | null;
+      slug: string | null;
+      summary: string | null;
+      coverImage: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      publishDate: string | null;
+      topics: Array<string> | null;
+      language: string | null;
+      seo: Seo | null;
+      gate: {
+        _type: "form";
+        _key: "gate";
+        title: string | null;
+        intro: string | null;
+        fields: Array<{
+          _key: string;
+          label: string | null;
+          name: string | null;
+          type:
+            | "checkbox"
+            | "email"
+            | "select"
+            | "tel"
+            | "text"
+            | "textarea"
+            | null;
+          choices: Array<string> | null;
+          required: boolean | null;
+          placeholder: string | null;
+        }> | null;
+        submitLabel: string | null;
+        successMessage: string | null;
+        hubspotPortalId: string | null;
+        hubspotFormId: string | null;
+      } | null;
+      downloadUrl: null;
+      status: "onDemand" | "upcoming" | null;
+      startsAt: string | null;
+      durationMinutes: number | null;
+      registrationUrl: string | null;
+      recordingUrl: string | null;
+      speakers: Array<{
+        _key: string;
+        name: string | null;
+        role: string | null;
+        company: string | null;
+        photo: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+      }> | null;
+      content: Array<
+        | {
+            _key: string;
+            _type: "callToAction";
+            title: string | null;
+            text: string | null;
+            links: Array<{
+              _key: string;
+              label: string | null;
+              href: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "cardGrid";
+            title: string | null;
+            intro: string | null;
+            cards: Array<{
+              _key: string;
+              title: string | null;
+              text: string | null;
+              image: CardImage | null;
+              link: {
+                label: string | null;
+                href: string | null;
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "faq";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              question: string | null;
+              answer: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<{
+                  href?: string;
+                  _type: "link";
+                  _key: string;
+                }>;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }> | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "features";
+            title: string | null;
+            intro: string | null;
+            items: Array<{
+              _key: string;
+              title: string | null;
+              text: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "form";
+            title: string | null;
+            intro: string | null;
+            fields: Array<{
+              _key: string;
+              label: string | null;
+              name: string | null;
+              type:
+                | "checkbox"
+                | "email"
+                | "select"
+                | "tel"
+                | "text"
+                | "textarea"
+                | null;
+              choices: Array<string> | null;
+              required: boolean | null;
+              placeholder: string | null;
+            }> | null;
+            submitLabel: string | null;
+            successMessage: string | null;
+            hubspotPortalId: string | null;
+            hubspotFormId: string | null;
+          }
+        | {
+            _key: string;
+            _type: "hero";
+            title: string | null;
+            text: string | null;
+            image: {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+            links: Array<{
+              _key: string;
+              label: string | null;
+              href: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "logoCloud";
+            title: string | null;
+            logos: Array<{
+              _key: string;
+              name: string | null;
+              href: string | null;
+              image: LogoImage | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "richText";
+            title: string | null;
+            body: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "blockquote" | "h3" | "h4" | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<{
+                href?: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "splitImage";
+            orientation: "imageLeft" | "imageRight" | null;
+            title: string | null;
+            body: Array<{
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?:
+                | "blockquote"
+                | "h1"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs?: Array<{
+                href?: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }> | null;
+            image: {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "stats";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              value: string | null;
+              label: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "testimonials";
+            title: string | null;
+            items: Array<{
+              _key: string;
+              quote: string | null;
+              name: string | null;
+              role: string | null;
+              company: string | null;
+              photo: Photo | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "video";
+            title: string | null;
+            url: string | null;
+            caption: string | null;
+          }
+      > | null;
+      translations: Array<{
+        language: string | null;
+        slug: string | null;
+        isHome: false;
+      }> | null;
+    }
+  | null;
+
+// Source: ../web/src/sanity/queries.ts
+// Variable: RESOURCE_SLUGS_QUERY
+// Query: *[_type in $types && language == $language && defined(slug.current)]{    _type,    "slug": slug.current  }
+export type RESOURCE_SLUGS_QUERY_RESULT = Array<
+  | {
+      _type: "caseStudy";
+      slug: string | null;
+    }
+  | {
+      _type: "ebook";
+      slug: string | null;
+    }
+  | {
+      _type: "page";
+      slug: string | null;
+    }
+  | {
+      _type: "report";
+      slug: string | null;
+    }
+  | {
+      _type: "resource";
+      slug: string | null;
+    }
+  | {
+      _type: "webinar";
+      slug: string | null;
+    }
+>;
+
+// Source: ../web/src/sanity/queries.ts
+// Variable: RESOURCE_LIST_QUERY
+// Query: *[_type in $types && language == $language && defined(slug.current)]    | order(publishDate desc, _createdAt desc){   _id,  _type,  title,  "slug": slug.current,  summary,  coverImage,  publishDate,  topics }
+export type RESOURCE_LIST_QUERY_RESULT = Array<
+  | {
+      _id: string;
+      _type: "caseStudy";
+      title: string | null;
+      slug: string | null;
+      summary: string | null;
+      coverImage: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      publishDate: string | null;
+      topics: Array<string> | null;
+    }
+  | {
+      _id: string;
+      _type: "ebook";
+      title: string | null;
+      slug: string | null;
+      summary: string | null;
+      coverImage: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      publishDate: string | null;
+      topics: Array<string> | null;
+    }
+  | {
+      _id: string;
+      _type: "page";
+      title: string | null;
+      slug: string | null;
+      summary: null;
+      coverImage: null;
+      publishDate: null;
+      topics: null;
+    }
+  | {
+      _id: string;
+      _type: "report";
+      title: string | null;
+      slug: string | null;
+      summary: string | null;
+      coverImage: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      publishDate: string | null;
+      topics: Array<string> | null;
+    }
+  | {
+      _id: string;
+      _type: "resource";
+      title: string | null;
+      slug: string | null;
+      summary: null;
+      coverImage: null;
+      publishDate: null;
+      topics: null;
+    }
+  | {
+      _id: string;
+      _type: "webinar";
+      title: string | null;
+      slug: string | null;
+      summary: string | null;
+      coverImage: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      publishDate: string | null;
+      topics: Array<string> | null;
+    }
+>;
+
 // Query TypeMap
 declare global {
   interface SanityQueries {
     '\n  *[_id == "settings-" + $language][0]{\n    title,\n    description,\n    navigation[]{ _key, label, href }\n  }\n': SETTINGS_QUERY_RESULT;
-    '\n  *[_id == "settings-" + $language][0].homePage->{ \n  _id,\n  title,\n  language,\n  "slug": slug.current,\n  seo,\n  content[]{\n    _key,\n    _type,\n    _type == "hero" => { title, text, image, links[]{ _key, label, href } },\n    _type == "features" => { title, intro, items[]{ _key, title, text } },\n    _type == "splitImage" => { orientation, title, body, image },\n    _type == "callToAction" => { title, text, links[]{ _key, label, href } },\n    _type == "richText" => { title, body },\n    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },\n    _type == "video" => { title, url, caption },\n    _type == "faq" => { title, items[]{ _key, question, answer } },\n    _type == "stats" => { title, items[]{ _key, value, label } },\n    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },\n    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },\n    _type == "form" => {\n      title,\n      intro,\n      fields[]{ _key, label, name, type, choices, required, placeholder },\n      submitLabel,\n      successMessage,\n      hubspotPortalId,\n      hubspotFormId\n    }\n  },\n  // Every language version of this page, linked by @sanity/document-internationalization\n  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{\n    language,\n    "slug": value->slug.current,\n    "isHome": value._ref in *[_type == "settings"].homePage._ref\n  }\n }\n': HOME_PAGE_QUERY_RESULT;
-    '\n  *[_type == "page" && language == $language && slug.current == $slug][0]{ \n  _id,\n  title,\n  language,\n  "slug": slug.current,\n  seo,\n  content[]{\n    _key,\n    _type,\n    _type == "hero" => { title, text, image, links[]{ _key, label, href } },\n    _type == "features" => { title, intro, items[]{ _key, title, text } },\n    _type == "splitImage" => { orientation, title, body, image },\n    _type == "callToAction" => { title, text, links[]{ _key, label, href } },\n    _type == "richText" => { title, body },\n    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },\n    _type == "video" => { title, url, caption },\n    _type == "faq" => { title, items[]{ _key, question, answer } },\n    _type == "stats" => { title, items[]{ _key, value, label } },\n    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },\n    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },\n    _type == "form" => {\n      title,\n      intro,\n      fields[]{ _key, label, name, type, choices, required, placeholder },\n      submitLabel,\n      successMessage,\n      hubspotPortalId,\n      hubspotFormId\n    }\n  },\n  // Every language version of this page, linked by @sanity/document-internationalization\n  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{\n    language,\n    "slug": value->slug.current,\n    "isHome": value._ref in *[_type == "settings"].homePage._ref\n  }\n }\n': PAGE_QUERY_RESULT;
+    '\n  *[_id == "settings-" + $language][0].homePage->{ \n  _id,\n  title,\n  language,\n  "slug": slug.current,\n  seo,\n  \n  content[]{\n    _key,\n    _type,\n    _type == "hero" => { title, text, image, links[]{ _key, label, href } },\n    _type == "features" => { title, intro, items[]{ _key, title, text } },\n    _type == "splitImage" => { orientation, title, body, image },\n    _type == "callToAction" => { title, text, links[]{ _key, label, href } },\n    _type == "richText" => { title, body },\n    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },\n    _type == "video" => { title, url, caption },\n    _type == "faq" => { title, items[]{ _key, question, answer } },\n    _type == "stats" => { title, items[]{ _key, value, label } },\n    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },\n    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },\n    _type == "form" => {\n      title,\n      intro,\n      fields[]{ _key, label, name, type, choices, required, placeholder },\n      submitLabel,\n      successMessage,\n      hubspotPortalId,\n      hubspotFormId\n    }\n  }\n,\n  // Every language version of this page, linked by @sanity/document-internationalization\n  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{\n    language,\n    "slug": value->slug.current,\n    "isHome": value._ref in *[_type == "settings"].homePage._ref\n  }\n }\n': HOME_PAGE_QUERY_RESULT;
+    '\n  *[_type == "page" && language == $language && slug.current == $slug][0]{ \n  _id,\n  title,\n  language,\n  "slug": slug.current,\n  seo,\n  \n  content[]{\n    _key,\n    _type,\n    _type == "hero" => { title, text, image, links[]{ _key, label, href } },\n    _type == "features" => { title, intro, items[]{ _key, title, text } },\n    _type == "splitImage" => { orientation, title, body, image },\n    _type == "callToAction" => { title, text, links[]{ _key, label, href } },\n    _type == "richText" => { title, body },\n    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },\n    _type == "video" => { title, url, caption },\n    _type == "faq" => { title, items[]{ _key, question, answer } },\n    _type == "stats" => { title, items[]{ _key, value, label } },\n    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },\n    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },\n    _type == "form" => {\n      title,\n      intro,\n      fields[]{ _key, label, name, type, choices, required, placeholder },\n      submitLabel,\n      successMessage,\n      hubspotPortalId,\n      hubspotFormId\n    }\n  }\n,\n  // Every language version of this page, linked by @sanity/document-internationalization\n  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{\n    language,\n    "slug": value->slug.current,\n    "isHome": value._ref in *[_type == "settings"].homePage._ref\n  }\n }\n': PAGE_QUERY_RESULT;
     '\n  *[_type == "page" && language == $language && defined(slug.current)]{ "slug": slug.current }\n': PAGE_SLUGS_QUERY_RESULT;
+    '\n  *[_type == $type && language == $language && slug.current == $slug][0]{ \n  \n  _id,\n  _type,\n  title,\n  "slug": slug.current,\n  summary,\n  coverImage,\n  publishDate,\n  topics\n,\n  language,\n  seo,\n  "gate": gate{ _type, "_key": "gate", \n  title,\n  intro,\n  fields[]{ _key, label, name, type, choices, required, placeholder },\n  submitLabel,\n  successMessage,\n  hubspotPortalId,\n  hubspotFormId\n },\n  "downloadUrl": select(defined(gate.fields) => null, file.asset->url),\n  _type == "ebook" => { authors, pageCount, tableOfContents },\n  _type == "report" => { edition, pageCount, keyFindings },\n  _type == "caseStudy" => {\n    customer,\n    customerLogo,\n    industry,\n    challenge,\n    solution,\n    results,\n    metrics[]{ _key, value, label },\n    quote{ text, person, role }\n  },\n  _type == "webinar" => {\n    status,\n    startsAt,\n    durationMinutes,\n    registrationUrl,\n    recordingUrl,\n    speakers[]{ _key, name, role, company, photo }\n  },\n  \n  content[]{\n    _key,\n    _type,\n    _type == "hero" => { title, text, image, links[]{ _key, label, href } },\n    _type == "features" => { title, intro, items[]{ _key, title, text } },\n    _type == "splitImage" => { orientation, title, body, image },\n    _type == "callToAction" => { title, text, links[]{ _key, label, href } },\n    _type == "richText" => { title, body },\n    _type == "cardGrid" => { title, intro, cards[]{ _key, title, text, image, link{ label, href } } },\n    _type == "video" => { title, url, caption },\n    _type == "faq" => { title, items[]{ _key, question, answer } },\n    _type == "stats" => { title, items[]{ _key, value, label } },\n    _type == "logoCloud" => { title, logos[]{ _key, name, href, image } },\n    _type == "testimonials" => { title, items[]{ _key, quote, name, role, company, photo } },\n    _type == "form" => {\n      title,\n      intro,\n      fields[]{ _key, label, name, type, choices, required, placeholder },\n      submitLabel,\n      successMessage,\n      hubspotPortalId,\n      hubspotFormId\n    }\n  }\n,\n  "translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{\n    language,\n    "slug": value->slug.current,\n    "isHome": false\n  }\n }\n': RESOURCE_QUERY_RESULT;
+    '\n  *[_type in $types && language == $language && defined(slug.current)]{\n    _type,\n    "slug": slug.current\n  }\n': RESOURCE_SLUGS_QUERY_RESULT;
+    '\n  *[_type in $types && language == $language && defined(slug.current)]\n    | order(publishDate desc, _createdAt desc){ \n  _id,\n  _type,\n  title,\n  "slug": slug.current,\n  summary,\n  coverImage,\n  publishDate,\n  topics\n }\n': RESOURCE_LIST_QUERY_RESULT;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

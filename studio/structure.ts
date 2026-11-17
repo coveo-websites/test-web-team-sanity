@@ -1,10 +1,21 @@
 import type {StructureBuilder, StructureResolver} from 'sanity/structure'
+import {BarChartIcon} from '@sanity/icons/BarChart'
+import {BookIcon} from '@sanity/icons/Book'
+import {CaseIcon} from '@sanity/icons/Case'
 import {CogIcon} from '@sanity/icons/Cog'
+import {PlayIcon} from '@sanity/icons/Play'
 import {DocumentsIcon} from '@sanity/icons/Documents'
 import {FolderIcon} from '@sanity/icons/Folder'
 import {TranslateIcon} from '@sanity/icons/Translate'
 
 import {LANGUAGES} from './languages'
+
+const RESOURCE_TEMPLATES = [
+  {type: 'ebook', title: 'Ebooks', icon: BookIcon},
+  {type: 'caseStudy', title: 'Case studies', icon: CaseIcon},
+  {type: 'report', title: 'Reports', icon: BarChartIcon},
+  {type: 'webinar', title: 'Webinars', icon: PlayIcon},
+]
 
 // One list per language for a localized document type, plus an "All" list
 function languageLists(S: StructureBuilder, schemaType: string, title: string) {
@@ -57,7 +68,26 @@ export const structure: StructureResolver = (S) =>
                 .child(
                   S.list()
                     .title('Resources')
-                    .items(languageLists(S, 'resource', 'Resources')),
+                    .items([
+                      // One list per template, each split by language
+                      ...RESOURCE_TEMPLATES.map(({type, title, icon}) =>
+                        S.listItem()
+                          .id(`resources-${type}`)
+                          .title(title)
+                          .icon(icon)
+                          .child(S.list().title(title).items(languageLists(S, type, title))),
+                      ),
+                      S.divider(),
+                      S.listItem()
+                        .id('resources-other')
+                        .title('Other resources')
+                        .icon(FolderIcon)
+                        .child(
+                          S.list()
+                            .title('Other resources')
+                            .items(languageLists(S, 'resource', 'Other resources')),
+                        ),
+                    ]),
                 ),
             ]),
         ),
